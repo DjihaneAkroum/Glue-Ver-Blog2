@@ -1,0 +1,46 @@
+{
+  "name" : "prod_load_groups_to_datalake",
+  "description" : "BI-Data Glue Jobs",
+  "role" : "arn:aws:iam::988707512974:role/glue-jobs-prod",
+  "executionProperty" : {
+    "maxConcurrentRuns" : 1
+  },
+  "command" : {
+    "name" : "glueetl",
+    "scriptLocation" : "s3://prod-bi-data-scripts-easygenerator/prod_load_groups_to_datalake.py",
+    "pythonVersion" : "3"
+  },
+  "defaultArguments" : {
+    "--enable-continuous-log-filter" : "true",
+    "--job-bookmark-option" : "job-bookmark-enable",
+    "--TempDir" : "s3://prod-spark-logs-easygenerator/temporary/",
+    "--extra-jars" : "s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/postgresql-42.3.3.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/delta-core_2.12-0.8.0.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/spark-snowflake_2.12-2.9.0-spark_3.1.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/snowflake-jdbc-3.13.11.jar",
+    "--class" : "GlueApp",
+    "--enable-metrics" : "true",
+    "--enable-spark-ui" : "true",
+    "--extra-py-files" : "s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/postgresql-42.3.3.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/delta-core_2.12-0.8.0.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/spark-snowflake_2.12-2.9.0-spark_3.1.jar,s3://prod-spark-jars-easygenerator/emr-bootstrap-scripts/jars/snowflake-jdbc-3.13.11.jar",
+    "--spark-event-logs-path" : "s3://prod-spark-logs-easygenerator/sparkHistoryLogs/",
+    "--enable-job-insights" : "true",
+    "--conf" : "spark.delta.logStore.class=org.apache.spark.sql.delta.storage.S3SingleDriverLogStore --conf spark.sql.extensions=io.delta.sql.DeltaSparkSessionExtension",
+    "--enable-continuous-cloudwatch-log" : "true",
+    "--job-language" : "python"
+  },
+  "connections" : {
+    "connections" : [ "db-acces-connection" ]
+  },
+  "maxRetries" : 0,
+  "allocatedCapacity" : 2,
+  "timeout" : 3000,
+  "maxCapacity" : 2.0,
+  "securityConfiguration" : "glue-jobs-sec",
+  "glueVersion" : "3.0",
+  "numberOfWorkers" : 2,
+  "workerType" : "G.1X",
+  "executionClass" : "STANDARD",
+  "sourceControlDetails" : {
+    "provider" : "GITHUB",
+    "repository" : "Glue-Ver-Blog2",
+    "branch" : "develop",
+    "folder" : "prod_load_groups_to_datalake"
+  }
+}
