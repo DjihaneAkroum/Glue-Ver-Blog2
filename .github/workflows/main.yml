@@ -14,6 +14,18 @@ jobs:
 #      - name: Checkout code
 #        uses: actions/checkout@v2
 
+      - name: Set up AWS configuration
+        run: |
+          # Set up AWS CLI configuration (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, etc.)
+          echo "Setting up AWS configuration..."
+          aws configure set aws_access_key_id AKIA6MM4PMKHHKEW5PWX
+          aws configure set aws_secret_access_key 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
+          aws configure set default.region eu-ccentral-1
+
+      - name: test aws connection
+        run: |
+          #try an ls to test connection
+          aws s3 ls s3://prod-datalake-data-analysis/silver
       - name: Run Custom Function
         run: |
           # You can write your custom logic here
