@@ -1,1 +1,32 @@
+name: Custom Workflow
 
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  my_custom_job:
+    runs-on: ubuntu-latest
+
+    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+
+      - name: Run Custom Function
+        run: |
+          # You can write your custom logic here
+          echo "Running my custom function..."
+          # You can call other scripts or functions as needed
+#          ./my_custom_script.sh
+
+      - name: Build application
+        run: |
+          # Custom build commands
+          echo "Building application..."
+
+      - name: Deploy application
+        run: |
+          # Custom deployment commands
+          echo "Deploying application..."
