@@ -20,7 +20,7 @@ jobs:
           echo "Setting up AWS configuration..."
           aws configure set aws_access_key_id AKIA6MM4PMKHHKEW5PWX
           aws configure set aws_secret_access_key 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
-          aws configure set default.region eu-ccentral-1
+          aws configure set default.region eu-central-1
 
       - name: test aws connection
         run: |
