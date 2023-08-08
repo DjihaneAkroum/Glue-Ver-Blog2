@@ -5,6 +5,11 @@ on:
     branches:
       - main
       - develop
+      - features/*
+env:
+  PROD_PYTHON_SCRIPT: "Hello, World!"
+  PROD_JSON_CONFIGURATION: "123"
+  REPO_NAME: env.GITHUB_REPOSITORY
 
 jobs:
   my_custom_job:
@@ -17,21 +22,26 @@ jobs:
       - name: Set up AWS configuration
         run: |
           # Set up AWS CLI configuration (AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, etc.)
-          echo "Setting up AWS configuration..."
-          aws configure set aws_access_key_id AKIA6MM4PMKHHKEW5PWX
-          aws configure set aws_secret_access_key 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
-          aws configure set default.region eu-central-1
 
       - name: test aws connection
         run: |
           #try an ls to test connection
-          aws s3 ls s3://prod-datalake-data-analysis/silver
+#      - name: Check if Glue Job already exists
+#        run: |
+#          job_name="your-job-name"
+#
+#          job_info=$(aws glue get-job --job-name "$job_name" 2>&1)
+#          if [ $? -eq 0 ]; then
+#            echo "Job $job_name exists:"
+#            echo "$job_info"
+#          else
+#            echo "Job $job_name does not exist."
+#          fi
       - name: Run Custom Function
         run: |
           # You can write your custom logic here
           echo "Running my custom function..."
           # You can call other scripts or functions as needed
-#          ./my_custom_script.sh
 
       - name: Build application
         run: |
@@ -42,3 +52,9 @@ jobs:
         run: |
           # Custom deployment commands
           echo "Deploying application..."
+      - name: Set Repository Name
+        id: set_repo_name
+        run: echo "::set-output name=repo_name::$(basename $GITHUB_REPOSITORY)"
+
+      - name: Print Repository Name
+        run: echo "Repository Name: ${{ steps.set_repo_name.outputs.repo_name }}"
